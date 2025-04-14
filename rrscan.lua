@@ -21,27 +21,39 @@ local EleTargets = {
 }
 
 local mageSpells = {
-    [FireElName]     = "fireball",
-    [FrostElName]    = "frostbolt",
-    [ArcaneElName]   = "arcane rupture",
-    [NatureElName]   = "shoot",
+    [FireElName]       = "fireball",
+    [FrostElName]      = "frostbolt",
+    [ArcaneElName]     = "arcane rupture",
+    [NatureElName]     = "shoot",
+	[PhysicalElName]   = "Warn",
+	[ShadowElName]     = "Warn",
 }
 
 local warlockSpells = {
-    [FireElName]     = "Shadowbolt",
-    [NatureElName]   = "shoot",
-    [ShadowElName]   = "Firebolt",
+    [FireElName]       = "Immolate",
+	[FrostElName]      = "Warn",
+	[ArcaneElName]     = "Warn",
+    [NatureElName]     = "shoot",
+    [PhysicalElName]   = "Warn",
+	[ShadowElName]     = "Shadow Bolt",
 }
 
 local priestSpells = {
-    [NatureElName]   = "shoot",
-    [ShadowElName]   = "shadow word: pain",
+	[FireElName]       = "Warn",
+	[FrostElName]      = "Warn",
+	[ArcaneElName]     = "Warn",
+    [NatureElName]     = "shoot",
+	[PhysicalElName]   = "Warn",
+    [ShadowElName]     = "Shadow Word: Pain",
 }
 
 local druidSpells = {
+	[FireElName]       = "Warn",
+	[FrostElName]      = "Warn",
     [ArcaneElName]     = "Starfire",
     [NatureElName]     = "Wrath",
     [PhysicalElName]   = "Warn",
+	[ShadowElName]     = "Warn",
 }
 
 local hunterSpells = {
@@ -50,6 +62,7 @@ local hunterSpells = {
     [ArcaneElName]     = "Arcane Shot",
     [NatureElName]     = "Serpent string",
     [PhysicalElName]   = "Warn",
+	[ShadowElName]     = "Warn",
 }
 
 local rogueSpells = {
@@ -58,6 +71,7 @@ local rogueSpells = {
     [ArcaneElName]     = "Warn",
     [NatureElName]     = "Warn",
     [PhysicalElName]   = "Warn",
+	[ShadowElName]     = "Warn",
 }
 
 local warriorSpells = {
@@ -66,14 +80,16 @@ local warriorSpells = {
     [ArcaneElName]     = "Warn",
     [NatureElName]     = "Warn",
     [PhysicalElName]   = "Warn",
+	[ShadowElName]     = "Warn",
 }
 
 local paladinSpells = {
     [FireElName]       = "Warn",
     [FrostElName]      = "Warn",
-    [ArcaneElName]     = "Arcane Shot",
-    [NatureElName]     = "Repentance",
+    [ArcaneElName]     = "Warn",
+    [NatureElName]     = "Warn",
     [PhysicalElName]   = "Warn",
+	[ShadowElName]     = "Warn",
 }
 
 local pclasses = {
