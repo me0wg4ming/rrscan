@@ -6,6 +6,15 @@ local ShadowElName     = "Black Affinity"
 local PhysicalElName   = "Crystal Affinity"
 local playerclass      
 
+local affinityMessages = {
+    [FireElName]     = "Cast Fire Spells!",
+    [FrostElName]    = "Cast Frost Spells!",
+    [ArcaneElName]   = "Cast Arcane Spells!",
+    [NatureElName]   = "Cast Nature Spells!",
+    [ShadowElName]   = "Cast Shadow Spells!",
+    [PhysicalElName] = "Smash it with Physical Damage!",
+}
+
 local EleTargets = {
     FireElName, FrostElName, ArcaneElName,
     NatureElName, ShadowElName, PhysicalElName
@@ -106,7 +115,7 @@ function rrScan(DefaultSpellName)
     for i, v in ipairs(EleTargets) do
         TargetByName(v)
         if UnitExists(unit) and (string.lower(UnitName(unit)) == string.lower(v)) then
-            DEFAULT_CHAT_FRAME:AddMessage(UnitName(unit) .. " targetted correctly")
+            --DEFAULT_CHAT_FRAME:AddMessage(UnitName(unit) .. " targetted correctly")
             local unNotAttackable = not UnitIsVisible(unit) or UnitIsFriend(unit, "player")
             local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
             if not (unNotAttackable or unDead) then
@@ -131,7 +140,13 @@ function rrEngageElemental(elementalName, continuing)
         rrCastTheThing(elementalName)
     else
         PlaySound("GLUECREATECHARACTERBUTTON", "master")
-        DEFAULT_CHAT_FRAME:AddMessage("STARTING Engagement " .. elementalName .. " as " .. playerclass)
+
+        -- Define the custom message from the affinityMessages table
+        local customMsg = affinityMessages[elementalName]
+        if customMsg then
+            DEFAULT_CHAT_FRAME:AddMessage(elementalName .. " detected, " .. customMsg, 1, 0, 0)
+        end
+
         rrPrepEngagement(elementalName)
         rrCastTheThing(elementalName)
     end
