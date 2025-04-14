@@ -21,9 +21,9 @@ local EleTargets = {
 }
 
 local mageSpells = {
-    [FireElName]       = "fireball",
-    [FrostElName]      = "frostbolt",
-    [ArcaneElName]     = "arcane rupture",
+    [FireElName]       = "Fireball",
+    [FrostElName]      = "Frostbolt",
+    [ArcaneElName]     = "Arcane Rupture",
     [NatureElName]     = "shoot",
 	[PhysicalElName]   = "Warn",
 	[ShadowElName]     = "Warn",
