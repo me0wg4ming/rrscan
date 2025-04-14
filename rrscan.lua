@@ -7,12 +7,12 @@ local PhysicalElName   = "Crystal Affinity"
 local playerclass      
 
 local affinityMessages = {
-    [FireElName]     = "Cast Fire Spells!",
-    [FrostElName]    = "Cast Frost Spells!",
-    [ArcaneElName]   = "Cast Arcane Spells!",
-    [NatureElName]   = "Cast Nature Spells!",
-    [ShadowElName]   = "Cast Shadow Spells!",
-    [PhysicalElName] = "Smash it with Physical Damage!",
+    [FireElName]     = "CAST FIRE SPELLS!",
+    [FrostElName]    = "CAST FROST SPELLS!",
+    [ArcaneElName]   = "CAST ARCANE SPELLS!",
+    [NatureElName]   = "CAST NATURE SPELLS!",
+    [ShadowElName]   = "CAST SHADOW SPELLS!",
+    [PhysicalElName] = "SMASH IT WITH PHYSICAL DAMAGE!",
 }
 
 local EleTargets = {
@@ -55,16 +55,16 @@ local hunterSpells = {
 local rogueSpells = {
     [FireElName]       = "Warn",
     [FrostElName]      = "Warn",
-    [ArcaneElName]     = "Arcane Shot",
-    [NatureElName]     = "Serpent string",
+    [ArcaneElName]     = "Warn",
+    [NatureElName]     = "Warn",
     [PhysicalElName]   = "Warn",
 }
 
 local warriorSpells = {
     [FireElName]       = "Warn",
     [FrostElName]      = "Warn",
-    [ArcaneElName]     = "Arcane Shot",
-    [NatureElName]     = "Serpent string",
+    [ArcaneElName]     = "Warn",
+    [NatureElName]     = "Warn",
     [PhysicalElName]   = "Warn",
 }
 
