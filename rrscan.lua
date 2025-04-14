@@ -89,7 +89,7 @@ local pclasses = {
 
 function rrScan(DefaultSpellName)
     playerclass = string.lower(UnitClass("player"))
-    if not zzcontains(pclasses, playerclass) then
+    if not pclasses[playerclass] then
         CastSpellByName(DefaultSpellName)
         return
     end
@@ -115,7 +115,6 @@ function rrScan(DefaultSpellName)
     for i, v in ipairs(EleTargets) do
         TargetByName(v)
         if UnitExists(unit) and (string.lower(UnitName(unit)) == string.lower(v)) then
-            --DEFAULT_CHAT_FRAME:AddMessage(UnitName(unit) .. " targetted correctly")
             local unNotAttackable = not UnitIsVisible(unit) or UnitIsFriend(unit, "player")
             local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
             if not (unNotAttackable or unDead) then
@@ -140,27 +139,80 @@ function rrEngageElemental(elementalName, continuing)
         rrCastTheThing(elementalName)
     else
         PlaySound("GLUECREATECHARACTERBUTTON", "master")
-
-        -- Define the custom message from the affinityMessages table
         local customMsg = affinityMessages[elementalName]
         if customMsg then
             DEFAULT_CHAT_FRAME:AddMessage(elementalName .. " detected, " .. customMsg, 1, 0, 0)
         end
-
         rrPrepEngagement(elementalName)
         rrCastTheThing(elementalName)
     end
 end
 
 function rrPrepEngagement(elementalName)
-    -- Optional prep message or logic
+    -- Placeholder for future logic if needed
+end
+
+function isInCatForm()
+    for i = 1, GetNumShapeshiftForms() do
+        local name, _, isActive = GetShapeshiftFormInfo(i)
+        if isActive and i == 3 then
+            return true
+        end
+    end
+    return false
+end
+
+function isInMoonkinForm()
+    for i = 1, 40 do
+        local buff = UnitBuff("player", i)
+        if buff and string.find(buff, "Moonkin") then
+            return true
+        end
+    end
+    return false
+end
+
+function cancelShapeshiftForm()
+    for i = 1, 40 do
+        local icon = UnitBuff("player", i)
+        if icon then
+            local _, _, buffTexture = UnitBuff("player", i)
+            if buffTexture and string.find(buffTexture, "Ability_") then
+                CancelPlayerBuff(i)
+                break
+            end
+        end
+    end
 end
 
 function rrCastTheThing(elementalName)
     local abilities = pclasses[playerclass]
-    if zzcontains(abilities, elementalName) then
+    if abilities and abilities[elementalName] then
         local ability = string.lower(abilities[elementalName])
-        if ability ~= "warn" and ability ~= "shoot" then
+
+        if playerclass == "druid" then
+            if elementalName == PhysicalElName then
+                if not isInCatForm() then
+                    cancelShapeshiftForm()
+                    CastSpellByName("Cat Form")
+                end
+                return
+            elseif elementalName == ArcaneElName or elementalName == NatureElName then
+                if not isInMoonkinForm() then
+                    cancelShapeshiftForm()
+                end
+                -- DO NOT return here! We still want to cast the spell (e.g., Wrath or Starfire)
+            end
+        end
+
+        if ability ~= "warn" then
+            if ability == "shoot" then
+                for i = 1, 120 do
+                    if IsAutoRepeatAction(i) then
+                        return -- already wanding
+                    end
+                end
+            end
             CastSpellByName(ability)
         end
     end
