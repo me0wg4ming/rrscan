@@ -234,20 +234,6 @@ function rrCastTheThing(elementalName)
     end
 end
 
-function zzcontains(ttable, titem)
-    for i in ttable do
-        if i == titem then return true end
-    end
-    return false
-end
-
-function zzcontainsKey(ttable, titem)
-    for i, v in ipairs(ttable) do
-        if i == titem then return true end
-    end
-    return false
-end
-
 SLASH_RRSCAN1 = "/rrscan"
 SlashCmdList["RRSCAN"] = function(msg)
     rrScan(msg)
