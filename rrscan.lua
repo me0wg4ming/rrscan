@@ -4,7 +4,7 @@ local ArcaneElName     = "Mana Affinity"
 local NatureElName     = "Green Affinity"
 local ShadowElName     = "Black Affinity"
 local PhysicalElName   = "Crystal Affinity"
-local playerclass      
+local playerclass        
 
 local affinityMessages = {
 	[FireElName]     = "CAST FIRE SPELLS!",
@@ -25,71 +25,71 @@ local mageSpells = {
 	[FrostElName]      = "Frostbolt",
 	[ArcaneElName]     = "Arcane Rupture",
 	[NatureElName]     = "shoot",
-	[PhysicalElName]   = "Warn",
-	[ShadowElName]     = "Warn",
+	[PhysicalElName]   = "cantattack",
+	[ShadowElName]     = "cantattack",
 }
 
 local warlockSpells = {
 	[FireElName]       = "Immolate",
-	[FrostElName]      = "Warn",
-	[ArcaneElName]     = "Warn",
-	[NatureElName]     = "shoot",
-	[PhysicalElName]   = "Warn",
+	[FrostElName]      = "cantattack",
+	[ArcaneElName]     = "cantattack",
+	[NatureElName]     = "cantattack",
+	[PhysicalElName]   = "cantattack",
 	[ShadowElName]     = "Shadow Bolt",
 }
 
 local priestSpells = {
-	[FireElName]       = "Warn",
-	[FrostElName]      = "Warn",
-	[ArcaneElName]     = "Warn",
+	[FireElName]       = "cantattack",
+	[FrostElName]      = "cantattack",
+	[ArcaneElName]     = "cantattack",
 	[NatureElName]     = "shoot",
-	[PhysicalElName]   = "Warn",
+	[PhysicalElName]   = "cantattack",
 	[ShadowElName]     = "Shadow Word: Pain",
 }
 
 local druidSpells = {
-	[FireElName]       = "Warn",
-	[FrostElName]      = "Warn",
+	[FireElName]       = "cantattack",
+	[FrostElName]      = "cantattack",
 	[ArcaneElName]     = "Starfire",
 	[NatureElName]     = "Wrath",
-	[PhysicalElName]   = "Warn",
-	[ShadowElName]     = "Warn",
+	[PhysicalElName]   = "physical",
+	[ShadowElName]     = "cantattack",
 }
 
 local hunterSpells = {
-	[FireElName]       = "Warn",
-	[FrostElName]      = "Warn",
+	[FireElName]       = "cantattack",
+	[FrostElName]      = "cantattack",
 	[ArcaneElName]     = "Arcane Shot",
-	[NatureElName]     = "Serpent string",
-	[PhysicalElName]   = "Warn",
-	[ShadowElName]     = "Warn",
+	[NatureElName]     = "Serpent Sting",
+	[PhysicalElName]   = "physical",
+	[ShadowElName]     = "cantattack",
 }
 
 local rogueSpells = {
-	[FireElName]       = "Warn",
-	[FrostElName]      = "Warn",
-	[ArcaneElName]     = "Warn",
-	[NatureElName]     = "Warn",
-	[PhysicalElName]   = "Warn",
-	[ShadowElName]     = "Warn",
+	[FireElName]       = "cantattack",
+	[FrostElName]      = "cantattack",
+	[ArcaneElName]     = "cantattack",
+	[NatureElName]     = "cantattack",
+	[PhysicalElName]   = "physical",
+	[ShadowElName]     = "cantattack",
 }
 
 local warriorSpells = {
-	[FireElName]       = "Warn",
-	[FrostElName]      = "Warn",
-	[ArcaneElName]     = "Warn",
-	[NatureElName]     = "Warn",
-	[PhysicalElName]   = "Warn",
-	[ShadowElName]     = "Warn",
+	[FireElName]       = "cantattack",
+	[FrostElName]      = "cantattack",
+	[ArcaneElName]     = "cantattack",
+	[NatureElName]     = "cantattack",
+	[PhysicalElName]   = "physical",
+	[ShadowElName]     = "cantattack",
 }
 
 local paladinSpells = {
-	[FireElName]       = "Warn",
-	[FrostElName]      = "Warn",
-	[ArcaneElName]     = "Warn",
-	[NatureElName]     = "Warn",
-	[PhysicalElName]   = "Warn",
-	[ShadowElName]     = "Warn",
+	[FireElName]       = "cantattack",
+	[FrostElName]      = "cantattack",
+	[ArcaneElName]     = "cantattack",
+	[NatureElName]     = "cantattack",
+	[PhysicalElName]   = "physical",
+	[ShadowElName]     = "cantattack",
 }
 
 local pclasses = {
@@ -117,33 +117,32 @@ function rrScan(safeDefaultSpell)
 	local unit = "target"
 
 	if UnitExists(unit) then  
-    ttoriginalTarget = string.lower(UnitName(unit))
-    previousTarget = true
-    for i, v in ipairs(EleTargets) do
-        if string.lower(v) == ttoriginalTarget then
-            local unNotAttackable = UnitIsFriend("player", unit)
-            local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
-            if not (unNotAttackable or unDead) then
-                engaging = true
-                rrEngageElemental(v, true)
-                return
-            end
-        end
-    end
-end
+		ttoriginalTarget = string.lower(UnitName(unit))
+		previousTarget = true
+		for i, v in ipairs(EleTargets) do
+			if string.lower(v) == ttoriginalTarget then
+				local unNotAttackable = UnitIsFriend("player", unit)
+				local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
+				local ability = string.lower(pclasses[playerclass][v] or "")
+				if not (unNotAttackable or unDead) and ability ~= "cantattack" then
+					engaging = true
+					rrEngageElemental(v, true)
+					return
+				end
+			end
+		end
+	end
 
 	for i, v in ipairs(EleTargets) do
-		TargetByName(v)
-		if UnitExists(unit) and (string.lower(UnitName(unit)) == string.lower(v)) then
-			local unNotAttackable = not UnitExists(unit) or UnitIsFriend("player", unit)
-			local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
-			if not (unNotAttackable or unDead) then
+		local ability = string.lower(pclasses[playerclass][v] or "")
+		if ability ~= "cantattack" then
+			if targetAliveElementalByName(v) then
 				skipping = false
 				rrEngageElemental(v, false)
 				engaging = true
+				break
 			end
 		end
-		if not skipping then break end
 	end
 
 	if skipping and previousTarget then
@@ -165,33 +164,34 @@ end
 		end
 	end
 
-	return true -- engaged, no need to cast default spell
+	return true
 end
 
 function rrEngageElemental(elementalName, continuing)
 	if continuing then
 		rrCastTheThing(elementalName)
 	else
-		PlaySound("GLUECREATECHARACTERBUTTON")
-		local customMsg = affinityMessages[elementalName]
-		if customMsg then
-			DEFAULT_CHAT_FRAME:AddMessage(elementalName .. " detected, " .. customMsg, 1, 0, 0)
+		local ability = string.lower(pclasses[playerclass][elementalName] or "")
+		if ability ~= "cantattack" then
+			PlaySound("GLUECREATECHARACTERBUTTON")
+			local customMsg = affinityMessages[elementalName]
+			if customMsg then
+				DEFAULT_CHAT_FRAME:AddMessage(elementalName .. " detected, " .. customMsg, 1, 0, 0)
+			end
 		end
-
 		rrPrepEngagement(elementalName)
 		rrCastTheThing(elementalName)
 	end
 end
 
 function rrPrepEngagement(elementalName)
-SpellStopCasting() --Enforces Spells to being stopped casting when an Affinity is found.
+	SpellStopCasting()
 end
-
 
 function isInCatForm()
 	for i = 1, GetNumShapeshiftForms() do
 		local name, _, isActive = GetShapeshiftFormInfo(i)
-		if isActive and name and string.find(name, "Cat") then
+		if isActive and i == 3 then
 			return true
 		end
 	end
@@ -242,17 +242,35 @@ function rrCastTheThing(elementalName)
 			end
 		end
 
-		if ability ~= "warn" then
+		if ability ~= "cantattack" then
 			if ability == "shoot" then
 				for i = 1, 120 do
 					if IsAutoRepeatAction(i) then
-						return -- already wanding
+						return
 					end
 				end
 			end
 			CastSpellByName(ability)
 		end
 	end
+end
+
+function targetAliveElementalByName(name)
+	ClearTarget()
+	for i = 1, 10 do
+		TargetNearestEnemy()
+		if UnitExists("target") then
+			local unitName = string.lower(UnitName("target") or "")
+			local isDead = UnitIsDeadOrGhost("target") or UnitHealth("target") <= 0
+			local isFriend = UnitIsFriend("player", "target")
+
+			if unitName == string.lower(name) and not isDead and not isFriend then
+				return true
+			end
+		end
+	end
+	ClearTarget()
+	return false
 end
 
 SLASH_RRSCAN1 = "/rrscan"
