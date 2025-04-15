@@ -131,7 +131,7 @@ function rrScan(safeDefaultSpell)
 	for i, v in ipairs(EleTargets) do
 		TargetByName(v)
 		if UnitExists(unit) and (string.lower(UnitName(unit)) == string.lower(v)) then
-			local unNotAttackable = not UnitIsVisible(unit) or UnitIsFriend(unit, "player")
+			local unNotAttackable = not UnitExists(unit) or UnitIsFriend("player", unit)
 			local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
 			if not (unNotAttackable or unDead) then
 				skipping = false
@@ -168,7 +168,7 @@ function rrEngageElemental(elementalName, continuing)
 	if continuing then
 		rrCastTheThing(elementalName)
 	else
-		PlaySound("GLUECREATECHARACTERBUTTON", "master")
+		PlaySound("GLUECREATECHARACTERBUTTON")
 		local customMsg = affinityMessages[elementalName]
 		if customMsg then
 			DEFAULT_CHAT_FRAME:AddMessage(elementalName .. " detected, " .. customMsg, 1, 0, 0)
