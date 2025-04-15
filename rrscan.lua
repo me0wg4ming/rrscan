@@ -1,7 +1,7 @@
 local FireElName       = "Red Affinity"
 local FrostElName      = "Blue Affinity"
 local ArcaneElName     = "Mana Affinity"
-local NatureElName     = "Green Affinity"
+local NatureElName     = "Expert Training Dummy"
 local ShadowElName     = "Black Affinity"
 local PhysicalElName   = "Crystal Affinity"
 local playerclass      
@@ -151,15 +151,17 @@ function rrScan(safeDefaultSpell)
 			return false
 		end
 	else
-		if not engaging then ClearTarget() end
-
-		if safeDefaultSpell and safeDefaultSpell ~= "" then
-			CastSpellByName(safeDefaultSpell)
-			return true
+		if not engaging then
+			ClearTarget()
+			if safeDefaultSpell and safeDefaultSpell ~= "" then
+				CastSpellByName(safeDefaultSpell)
+				return true
+			end
+			return false
 		end
-
-		return engaging
 	end
+
+	return true -- engaged, no need to cast default spell
 end
 
 function rrEngageElemental(elementalName, continuing)
@@ -223,7 +225,7 @@ function rrCastTheThing(elementalName)
 				if not isInCatForm() then
 					cancelShapeshiftForm()
 					CastSpellByName("Cat Form")
-					else
+				else
 					CastSpellByName("Claw")
 				end
 				return
@@ -231,7 +233,6 @@ function rrCastTheThing(elementalName)
 				if not isInMoonkinForm() then
 					cancelShapeshiftForm()
 				end
-				-- DO NOT return here! We still want to cast the spell (e.g., Wrath or Starfire)
 			end
 		end
 
