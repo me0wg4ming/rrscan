@@ -1,6 +1,6 @@
 local FireElName       = "Red Affinity"
 local FrostElName      = "Blue Affinity"
-local ArcaneElName     = "Mana Affinity"
+local ArcaneElName     = "Expert Training Dummy"
 local NatureElName     = "Green Affinity"
 local ShadowElName     = "Black Affinity"
 local PhysicalElName   = "Crystal Affinity"
@@ -173,6 +173,10 @@ function rrEngageElemental(elementalName, continuing)
 		if customMsg then
 			DEFAULT_CHAT_FRAME:AddMessage(elementalName .. " detected, " .. customMsg, 1, 0, 0)
 		end
+
+		-- ✅ One-time unconditional cancel of current cast (safe in 1.12.1)
+		SpellStopCasting()
+
 		rrPrepEngagement(elementalName)
 		rrCastTheThing(elementalName)
 	end
@@ -182,10 +186,11 @@ function rrPrepEngagement(elementalName)
 	-- Placeholder for future logic if needed
 end
 
+
 function isInCatForm()
 	for i = 1, GetNumShapeshiftForms() do
 		local name, _, isActive = GetShapeshiftFormInfo(i)
-		if isActive and i == 3 then
+		if isActive and name and string.find(name, "Cat") then
 			return true
 		end
 	end
