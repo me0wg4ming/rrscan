@@ -1,7 +1,7 @@
 local FireElName       = "Red Affinity"
 local FrostElName      = "Blue Affinity"
 local ArcaneElName     = "Mana Affinity"
-local NatureElName     = "Expert Training Dummy"
+local NatureElName     = "Green Affinity"
 local ShadowElName     = "Black Affinity"
 local PhysicalElName   = "Crystal Affinity"
 local playerclass      
