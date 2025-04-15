@@ -117,16 +117,20 @@ function rrScan(safeDefaultSpell)
 	local unit = "target"
 
 	if UnitExists(unit) then  
-		ttoriginalTarget = string.lower(UnitName(unit))
-		previousTarget = true
-		for i, v in ipairs(EleTargets) do
-			if string.lower(v) == ttoriginalTarget then
-				engaging = true
-				rrEngageElemental(v, true)
-				return
-			end
-		end
-	end
+    ttoriginalTarget = string.lower(UnitName(unit))
+    previousTarget = true
+    for i, v in ipairs(EleTargets) do
+        if string.lower(v) == ttoriginalTarget then
+            local unNotAttackable = UnitIsFriend("player", unit)
+            local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
+            if not (unNotAttackable or unDead) then
+                engaging = true
+                rrEngageElemental(v, true)
+                return
+            end
+        end
+    end
+end
 
 	for i, v in ipairs(EleTargets) do
 		TargetByName(v)
