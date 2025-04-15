@@ -144,7 +144,11 @@ function rrScan(DefaultSpellName)
 
 	if skipping and previousTarget then
 		TargetByName(ttoriginalTarget)
-		CastSpellByName(DefaultSpellName)
+		if DefaultSpellName then
+			CastSpellByName(DefaultSpellName)
+		else
+			DEFAULT_CHAT_FRAME:AddMessage("RRScan: No default spell provided!", 1, 0, 0)
+		end
 	else
 		if not engaging then ClearTarget() end
 	end
@@ -211,6 +215,8 @@ function rrCastTheThing(elementalName)
 				if not isInCatForm() then
 					cancelShapeshiftForm()
 					CastSpellByName("Cat Form")
+					else
+					CastSpellByName("Claw")
 				end
 				return
 			elseif elementalName == ArcaneElName or elementalName == NatureElName then
