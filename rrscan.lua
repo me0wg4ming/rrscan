@@ -174,7 +174,7 @@ function rrEngageElemental(elementalName, continuing)
 			DEFAULT_CHAT_FRAME:AddMessage(elementalName .. " detected, " .. customMsg, 1, 0, 0)
 		end
 
-		-- ✅ One-time unconditional cancel of current cast (safe in 1.12.1)
+		-- ✅ One-time unconditional cancel of current cast if target was found to cast the spell from list.
 		SpellStopCasting()
 
 		rrPrepEngagement(elementalName)
