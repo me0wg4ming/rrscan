@@ -1,5 +1,5 @@
 local FireElName       = "Red Affinity"
-local FrostElName      = "Blue Affinity"
+local FrostElName      = "Expert Training Dummy"
 local ArcaneElName     = "Mana Affinity"
 local NatureElName     = "Green Affinity"
 local ShadowElName     = "Black Affinity"
@@ -174,16 +174,13 @@ function rrEngageElemental(elementalName, continuing)
 			DEFAULT_CHAT_FRAME:AddMessage(elementalName .. " detected, " .. customMsg, 1, 0, 0)
 		end
 
-		-- ✅ One-time unconditional cancel of current cast if target was found to cast the spell from list.
-		SpellStopCasting()
-
 		rrPrepEngagement(elementalName)
 		rrCastTheThing(elementalName)
 	end
 end
 
 function rrPrepEngagement(elementalName)
-	-- Placeholder for future logic if needed
+SpellStopCasting() --Enforces Spells to being stopped casting when an Affinity is found.
 end
 
 
