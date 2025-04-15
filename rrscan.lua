@@ -103,10 +103,10 @@ local pclasses = {
 	["paladin"]   = paladinSpells,
 }
 
-function rrScan(DefaultSpellName)
+function rrScan(safeDefaultSpell)
 	playerclass = string.lower(UnitClass("player"))
 	if not pclasses[playerclass] then
-		CastSpellByName(DefaultSpellName)
+		CastSpellByName(safeDefaultSpell)
 		return
 	end
 
@@ -144,13 +144,21 @@ function rrScan(DefaultSpellName)
 
 	if skipping and previousTarget then
 		TargetByName(ttoriginalTarget)
-		if DefaultSpellName then
-			CastSpellByName(DefaultSpellName)
+		if safeDefaultSpell and safeDefaultSpell ~= "" then
+			CastSpellByName(safeDefaultSpell)
+			return true
 		else
-			DEFAULT_CHAT_FRAME:AddMessage("RRScan: No default spell provided!", 1, 0, 0)
+			return false
 		end
 	else
 		if not engaging then ClearTarget() end
+
+		if safeDefaultSpell and safeDefaultSpell ~= "" then
+			CastSpellByName(safeDefaultSpell)
+			return true
+		end
+
+		return engaging
 	end
 end
 
@@ -242,5 +250,7 @@ end
 
 SLASH_RRSCAN1 = "/rrscan"
 SlashCmdList["RRSCAN"] = function(msg)
-	rrScan(msg)
+	local didSomething = rrScan(msg)
+	if not didSomething and (not msg or msg == "") then
+	end
 end
