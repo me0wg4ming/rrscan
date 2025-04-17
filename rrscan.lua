@@ -33,7 +33,7 @@ local warlockSpells = {
 	[FireElName]       = "Immolate",
 	[FrostElName]      = "cantattack",
 	[ArcaneElName]     = "cantattack",
-	[NatureElName]     = "cantattack",
+	[NatureElName]     = "shoot",
 	[PhysicalElName]   = "cantattack",
 	[ShadowElName]     = "Shadow Bolt",
 }
