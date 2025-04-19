@@ -1,7 +1,7 @@
 local FireElName       = "Red Affinity"
 local FrostElName      = "Blue Affinity"
 local ArcaneElName     = "Mana Affinity"
-local NatureElName     = "Green Affinity"
+local NatureElName     = "Mangy Wolf"
 local ShadowElName     = "Black Affinity"
 local PhysicalElName   = "Crystal Affinity"
 local playerclass        
@@ -42,7 +42,7 @@ local priestSpells = {
 	[FireElName]       = "cantattack",
 	[FrostElName]      = "cantattack",
 	[ArcaneElName]     = "cantattack",
-	[NatureElName]     = "shoot",
+	[NatureElName]     = "smite",
 	[PhysicalElName]   = "cantattack",
 	[ShadowElName]     = "Shadow Word: Pain",
 }
@@ -110,17 +110,14 @@ function rrScan(safeDefaultSpell)
 		return
 	end
 
-	local ttoriginalTarget = ""
-	local previousTarget = false
-	local skipping = true
 	local engaging = false
 	local unit = "target"
 
+	-- Check if current target is an Affinity
 	if UnitExists(unit) then  
-		ttoriginalTarget = string.lower(UnitName(unit))
-		previousTarget = true
+		local currentTargetName = string.lower(UnitName(unit))
 		for i, v in ipairs(EleTargets) do
-			if string.lower(v) == ttoriginalTarget then
+			if string.lower(v) == currentTargetName then
 				local unNotAttackable = UnitIsFriend("player", unit)
 				local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
 				local ability = string.lower(pclasses[playerclass][v] or "")
@@ -133,11 +130,11 @@ function rrScan(safeDefaultSpell)
 		end
 	end
 
+	-- Scan for alive Affinity
 	for i, v in ipairs(EleTargets) do
 		local ability = string.lower(pclasses[playerclass][v] or "")
 		if ability ~= "cantattack" then
 			if targetAliveElementalByName(v) then
-				skipping = false
 				rrEngageElemental(v, false)
 				engaging = true
 				break
@@ -145,27 +142,18 @@ function rrScan(safeDefaultSpell)
 		end
 	end
 
-	if skipping and previousTarget then
-		TargetByName(ttoriginalTarget)
-		if safeDefaultSpell and safeDefaultSpell ~= "" then
-			CastSpellByName(safeDefaultSpell)
-			return true
-		else
-			return false
-		end
-	else
-		if not engaging then
-			ClearTarget()
-			if safeDefaultSpell and safeDefaultSpell ~= "" then
-				CastSpellByName(safeDefaultSpell)
-				return true
-			end
-			return false
-		end
+	-- No Affinity engaged — fallback spell and clear target only if needed
+if not engaging then
+	if safeDefaultSpell and safeDefaultSpell ~= "" then
+		CastSpellByName(safeDefaultSpell)
+		return true
 	end
-
+	return false
+end
 	return true
 end
+
+
 
 function rrEngageElemental(elementalName, continuing)
 	if continuing then
@@ -264,12 +252,11 @@ function targetAliveElementalByName(name)
 			local isDead = UnitIsDeadOrGhost("target") or UnitHealth("target") <= 0
 			local isFriend = UnitIsFriend("player", "target")
 
-			if unitName == string.lower(name) and not isDead and not isFriend then
-				return true
+			if not isDead and not isFriend and unitName == string.lower(name) then
+				return true -- ✅ found the live affinity — stop scanning
 			end
 		end
 	end
-	ClearTarget()
 	return false
 end
 

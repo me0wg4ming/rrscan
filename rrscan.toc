@@ -1,5 +1,5 @@
 ## Interface: 11200
-## Author: Meow
+## Author: Unknown
 ## Version: 0.1
 ## Title: rrscan
 ## Notes: rrscan for 2nd boss in Karazhan 40
