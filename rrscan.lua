@@ -104,56 +104,57 @@ local pclasses = {
 }
 
 function rrScan(safeDefaultSpell)
-	playerclass = string.lower(UnitClass("player"))
-	if not pclasses[playerclass] then
-		CastSpellByName(safeDefaultSpell)
-		return
-	end
+    playerclass = string.lower(UnitClass("player"))
+    if not pclasses[playerclass] then
+        CastSpellByName(safeDefaultSpell)
+        return
+    end
 
-	local engaging = false
-	local unit = "target"
+    local engaging = false
+    local unit = "target"
 
-	-- Check if current target is an Affinity
-	if UnitExists(unit) then  
-		local currentTargetName = string.lower(UnitName(unit))
-		for i, v in ipairs(EleTargets) do
-			if string.lower(v) == currentTargetName then
-				local unNotAttackable = UnitIsFriend("player", unit)
-				local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
-				local ability = string.lower(pclasses[playerclass][v] or "")
-				if not (unNotAttackable or unDead) and ability ~= "cantattack" then
-					engaging = true
-					rrEngageElemental(v, true)
-					return
-				end
-			end
-		end
-	end
+    -- Check if current target is an Affinity
+    if UnitExists(unit) then  
+        local currentTargetName = string.lower(UnitName(unit))
+        for _, affinity in ipairs(EleTargets) do
+            if string.lower(affinity) == currentTargetName then
+                local unNotAttackable = UnitIsFriend("player", unit)
+                local unDead = not (UnitHealth(unit) > 0) or UnitIsDeadOrGhost(unit)
+                local ability = string.lower(pclasses[playerclass][affinity] or "")
+                if not (unNotAttackable or unDead) and ability ~= "cantattack" then
+                    engaging = true
+                    rrEngageElemental(affinity, true)
+                    return
+                end
+            end
+        end
+    end
 
-	-- Scan for alive Affinity
-	for i, v in ipairs(EleTargets) do
-		local ability = string.lower(pclasses[playerclass][v] or "")
-		if ability ~= "cantattack" then
-			if targetAliveElementalByName(v) then
-				rrEngageElemental(v, false)
-				engaging = true
-				break
-			end
-		end
-	end
+    -- Skip scan for alive Affinity if already targeting one
+    if not engaging then
+        -- Scan for alive Affinity
+        for _, affinity in ipairs(EleTargets) do
+            local ability = string.lower(pclasses[playerclass][affinity] or "")
+            if ability ~= "cantattack" then
+                if targetAliveElementalByName(affinity) then
+                    rrEngageElemental(affinity, false)
+                    engaging = true
+                    break
+                end
+            end
+        end
+    end
 
-	-- No Affinity engaged — fallback spell and clear target only if needed
-if not engaging then
-	if safeDefaultSpell and safeDefaultSpell ~= "" then
-		CastSpellByName(safeDefaultSpell)
-		return true
-	end
-	return false
+    -- No Affinity engaged — fallback spell and clear target only if needed
+    if not engaging then
+        if safeDefaultSpell and safeDefaultSpell ~= "" then
+            CastSpellByName(safeDefaultSpell)
+            return true
+        end
+        return false
+    end
+    return true
 end
-	return true
-end
-
-
 
 function rrEngageElemental(elementalName, continuing)
 	if continuing then
