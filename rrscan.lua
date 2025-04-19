@@ -42,7 +42,7 @@ local priestSpells = {
 	[FireElName]       = "cantattack",
 	[FrostElName]      = "cantattack",
 	[ArcaneElName]     = "cantattack",
-	[NatureElName]     = "smite",
+	[NatureElName]     = "shoot",
 	[PhysicalElName]   = "cantattack",
 	[ShadowElName]     = "Shadow Word: Pain",
 }
